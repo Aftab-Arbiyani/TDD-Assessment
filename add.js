@@ -25,11 +25,26 @@ const add = (numbers) => {
     }
 
     let sum = 0;
+    let negatives = [];
     const numberArray = numberString.split(delimiter);
 
     for (const number of numberArray) {
         const parsedNumber = parseInt(number);
-        sum += parsedNumber;
+
+        if (parsedNumber > 1000) { // Skip if number greater than 100
+            continue;
+        }
+
+        if (parsedNumber < 0) {
+            negatives.push(parsedNumber);
+        } else {
+            sum += parsedNumber;
+        }
+    }
+
+    // Throw an error if negative numbers present in string
+    if (negatives.length > 0) {
+        throw new Error(`Negative numbers not allowed: ${negatives.join(", ")}`);
     }
 
     return sum;
