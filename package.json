@@ -1,0 +1,11 @@
+{
+  "name": "tdd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "add.js",
+  "scripts": {
+    "test": "npx jest add.test.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
