@@ -10,4 +10,15 @@ describe('add', () => {
         expect(add('1,5')).toBe(6);
         expect(add('1\n2,3')).toBe(6);
     });
+
+    test('should handle custom and repeating delimiters', () => {
+        expect(add('//;\n1;2;3')).toBe(6);
+        expect(add('//|\n1|5|3')).toBe(9);
+        expect(add('//[***]\n1***2***3')).toBe(6);
+        expect(add('//[***][%]\n1***2%100')).toBe(103);
+    });
+
+    test('should ignore numbers greater than 1000', () => {
+        expect(add('1001, 2')).toBe(2);
+    });
 });

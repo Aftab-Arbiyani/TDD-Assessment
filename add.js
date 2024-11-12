@@ -4,10 +4,24 @@ const add = (numbers) => {
     let delimiter = /,|\n/;
     let numberString = numbers;
 
-    if (numbers.startsWith("//")) {
+    if (numbers.startsWith('//')) {
         const delimiterEndIndex = numbers.indexOf('\n');
-        delimiter = new RegExp(numbers.substring(2, delimiterEndIndex).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-        numberString = numbers.substring(delimiterEndIndex + 1);
+        const delimiterSection = numbers.substring(2, delimiterEndIndex);
+
+        // Check for multiple delimiters
+        const delimiterMatches = delimiterSection.match(/\[(.*?)\]/g);
+
+        if (delimiterMatches) {
+            // Extract delimiters and join them with | symbol
+            const delimiters = delimiterMatches.map(d => d.slice(1, -1)); // Remove the square brackets
+            const escapedDelimiters = delimiters.map(d => d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')); // Escape special characters
+            delimiter = new RegExp(escapedDelimiters.join('|'), "g"); // Join delimiters with | symbol
+        } else {
+            // Single character delimiter
+            delimiter = new RegExp(delimiterSection.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+        }
+
+        numberString = numberString.substring(delimiterEndIndex + 1);
     }
 
     let sum = 0;
